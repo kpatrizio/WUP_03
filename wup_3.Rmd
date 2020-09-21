@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r include=FALSE}
 require(tidyverse)
 require(tigerstats)
+require(knitr)
 davisdata <- read.csv(file="UCDavis.csv")
 ```
 ## Our Goal is to answer this question Is there a difference between the alcohol consumed between the row
@@ -36,9 +37,39 @@ basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='e
 ```
 
 ## Numerical Summarys 
+```{r}
+favstats(alcohol~Seat,data=davisdata)
+```
 
 ## Inferential Tests
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
+par(mar = c(3, 8.7, 2, 2))
+plot(TukeyHSD(model1),las=2)
+```
+
+```
+```{r}
+#we specify the margins starting at the bottom and proceeding clockwise - thus 8.7 is the left side margin to hold the names of the factors
+par(mar = c(3, 8.7, 2, 2))
+plot(TukeyHSD(model1),las=2)
+```
+
 
 ## Conclusions
+The question...Is there a difference between the alcohol consumed between the row
+## you choose to sit in? 
+
+When running an inferential test, the result produces a  P-value less than 0.05 which leads us to reject the null hypothesis that there is no difference in how much alcohol is consumed based on seating.
+
+However, the alternative hypothesis, using the t-test which is recommended in the instructions, to run a t-test, in this case, use anova if you only have two variables.
+
+The alternative results do suggest that there is a difference in alcohol consumption based on seating when you see that the most consumption of alcohol were mostly consumed by people sitting in the back rows making the front to back and the middle to back rows change more than the front to middle.  
+
+We can also make this same conclusion when we review both the box plot and the fancy box plot.  We conclude that more alcohol is consumed by those who sit in the back row seats; therefore showing that there is a difference in the amount of alcohol consumption based on seating.  
+
+
 
 
