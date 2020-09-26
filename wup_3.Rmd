@@ -18,6 +18,9 @@ davisdata <- read.csv(file="UCDavis.csv")
 ## Our Goal is to answer this question Is there a difference between the alcohol consumed between the row
 ## you choose to sit in??
 
+$H_0$: Null Hypothesis is, there is no difference between the average alcohol consumed and the row that a person chooses to sit in.  
+$H_A$: Alternative Hypothesis is, there is a difference between the average alcohol consumed based on the row a person chooses to sit in.   
+
 ## Now with ggplot - first select the basic data
 
 ```{r}
@@ -29,23 +32,32 @@ basicCN <- ggplot(davisdata,aes(y=alcohol,x=Seat))
 basicCN + geom_boxplot()
 ```
   
+This Box Plot shows that the consumption of alcohol was approximately 10 percent more than the average by people who chose to sit in the back row. Those who chose to sit in the front and middle rows show almost none or very little consumption of alcohol.   
   
 ### get fancy  
 
 ```{r}
 basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='errorbar') + labs(title="Fancy notch boxplot \n with 2 lines")
 ```
+  
+The fancy notch box plot above shows us that the "mean" lies within the 95%  confidence level  for the back row seats, and if the notches of two boxes do not overlap, this offers evidence of a statistically significant difference between the medians.  This would also confirm that we must reject the null hypothesis that there is no difference.
 
 ## Numerical Summarys 
 ```{r}
 favstats(alcohol~Seat,data=davisdata)
 ```
+  
+The Cross-Tabulation Statistical Chart shows us that the "mean" consumption of alcohol consumed by people who chose the back row is significantly higher at 
+9.6% as opposed to 1.8% consumption in the Front row and 3.28% consumption in the middle row.  
 
 ## Inferential Tests
 ```{r}
 model1 <- aov(alcohol~Seat,data=davisdata)
 summary.aov(model1)
 ```
+  
+The Anova test shows us that there is a p-value of .000116 which is less than the 0.05 that is required.  This graph tells us that we must reject the null hypothesis, because it is not possible that there would be no change based on the choice of row a person sits in, and the consumption of alcohol. 
+
 par(mar = c(3, 8.7, 2, 2))
 plot(TukeyHSD(model1),las=2)
 ```
@@ -56,19 +68,15 @@ plot(TukeyHSD(model1),las=2)
 par(mar = c(3, 8.7, 2, 2))
 plot(TukeyHSD(model1),las=2)
 ```
-
+  
+In the 95% confidence level statistical graph above we can determine that because the 0 is in the middle-front row there is no differnce.  The middle-back row indicates a difference, and the front-back row shows the biggest difference indicating that from the front to the back row, those sitting in the back row consumed a significant amount more of alcohol than those who chose the front or middle seats.    
 
 ## Conclusions
-The question...Is there a difference between the alcohol consumed between the row
-## you choose to sit in? 
+The question???...Is there a difference between the average alcohol consumed and the row we choose to sit in???  
 
-When running an inferential test, the result produces a  P-value less than 0.05 which leads us to reject the null hypothesis that there is no difference in how much alcohol is consumed based on seating.
+From the Box plots, numerical summaries, inferential, and Anova test shown above we conclude that yes there is a difference between the average alcohol consumed and the row people chose to sit in.    
 
-However, the alternative hypothesis, using the t-test which is recommended in the instructions, to run a t-test, in this case, use anova if you only have two variables.
-
-The alternative results do suggest that there is a difference in alcohol consumption based on seating when you see that the most consumption of alcohol were mostly consumed by people sitting in the back rows making the front to back and the middle to back rows change more than the front to middle.  
-
-We can also make this same conclusion when we review both the box plot and the fancy box plot.  We conclude that more alcohol is consumed by those who sit in the back row seats; therefore showing that there is a difference in the amount of alcohol consumption based on seating.  
+ 
 
 
 
